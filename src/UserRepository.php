@@ -14,6 +14,7 @@ namespace Afrux\TopPosters;
 use Afrux\ForumWidgets\SafeCacheRepositoryAdapter;
 use Carbon\Carbon;
 use Flarum\Post\CommentPost;
+use Flarum\Settings\SettingsRepositoryInterface;
 
 class UserRepository
 {
@@ -22,25 +23,38 @@ class UserRepository
      */
     private $cache;
 
-    public function __construct(SafeCacheRepositoryAdapter $cache)
+     /**
+     * @var SettingsRepositoryInterface
+     */
+    protected $settings;
+
+    public function __construct(SafeCacheRepositoryAdapter $cache, SettingsRepositoryInterface $settings)
     {
         $this->cache = $cache;
+        $this->settings = $settings;
     }
+
 
     public function getTopPosters(): array
     {
-        return $this->cache->remember('afrux-top-posters-widget.top_poster_counts', 2400, function (): array {
-            return CommentPost::query()
-                ->selectRaw('user_id, count(id) as count')
-                ->where('created_at', '>', Carbon::now()->subMonth())
-                ->groupBy('user_id')
-                ->orderBy('count', 'desc')
-                ->limit(5)
-                ->get()
-                ->mapWithKeys(function ($post) {
-                    return [$post->user_id => (int) $post->count];
-                })
-                ->toArray();
-        }) ?: [];
+        $excludedUsernames = explode(';', $this->settings->get('afrux-top-posters-widget.excluded_usernames'));
+
+        return CommentPost::query()
+            ->with('user')
+            ->whereHas('user', function ($query) use ($excludedUsernames) {
+                if (!empty($excludedUsernames)) {
+                    $query->whereNotIn('username', $excludedUsernames);
+                }
+            })
+            ->selectRaw('user_id, count(id) as count')
+            ->where('created_at', '>', Carbon::now()->subMonth())
+            ->groupBy('user_id')
+            ->orderBy('count', 'desc')
+            ->limit(5)
+            ->get()
+            ->mapWithKeys(function ($post) {
+                return [$post->user_id => (int) $post->count];
+            })
+            ->toArray();
     }
 }

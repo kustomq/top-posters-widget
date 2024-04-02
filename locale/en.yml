@@ -1,4 +1,7 @@
 afrux-top-posters-widget:
+  admin:
+    excluded_usernames: "Excluded usernames"
+    excluded_usernames_help: "Enter the usernames of the community members you would like to exclude from the widget separated by ';' for example - Rob;Carl;Akis"
   forum:
     widget:
       title: Top Posters this Month
