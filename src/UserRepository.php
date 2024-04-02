@@ -37,24 +37,27 @@ class UserRepository
 
     public function getTopPosters(): array
     {
-        $excludedUsernames = explode(';', $this->settings->get('afrux-top-posters-widget.excluded_usernames'));
+        return $this->cache->remember('afrux-top-posters-widget.top_poster_counts', 2400, function (): array {
+            $excludedUsernames = explode(';', $this->settings->get('afrux-top-posters-widget.excluded_usernames'));
 
-        return CommentPost::query()
-            ->with('user')
-            ->whereHas('user', function ($query) use ($excludedUsernames) {
-                if (!empty($excludedUsernames)) {
-                    $query->whereNotIn('username', $excludedUsernames);
-                }
-            })
-            ->selectRaw('user_id, count(id) as count')
-            ->where('created_at', '>', Carbon::now()->subMonth())
-            ->groupBy('user_id')
-            ->orderBy('count', 'desc')
-            ->limit(5)
-            ->get()
-            ->mapWithKeys(function ($post) {
-                return [$post->user_id => (int) $post->count];
-            })
-            ->toArray();
+            return CommentPost::query()
+                ->with('user')
+                ->whereHas('user', function ($query) use ($excludedUsernames) {
+                    if (!empty($excludedUsernames)) {
+                        $query->whereNotIn('username', $excludedUsernames);
+                    }
+                })
+                ->selectRaw('user_id, count(id) as count')
+                ->where('type', '=', 'comment')
+                ->where('created_at', '>', Carbon::now()->subMonth())
+                ->groupBy('user_id')
+                ->orderBy('count', 'desc')
+                ->limit(5)
+                ->get()
+                ->mapWithKeys(function ($post) {
+                    return [$post->user_id => (int) $post->count];
+                })
+                ->toArray();
+            }) ?: [];
     }
 }
