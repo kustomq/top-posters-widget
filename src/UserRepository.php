@@ -54,7 +54,7 @@ class UserRepository
                 ->where('created_at', '>', Carbon::now()->subMonth())
                 ->groupBy('user_id')
                 ->orderBy('count', 'desc')
-                ->limit(5)
+                ->limit(10)
                 ->get()
                 ->mapWithKeys(function ($post) {
                     return [$post->user_id => (int) $post->count];

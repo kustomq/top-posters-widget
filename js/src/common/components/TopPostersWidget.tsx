@@ -47,11 +47,12 @@ export default class TopPostersWidget extends Widget {
       return <LoadingIndicator />;
     }
 
+    const isCurrentDeviceMobile = window.matchMedia('(max-width: 767.98px)').matches;
     const users = this.attrs.state.users.sort((a: User, b: User) => this.monthlyCounts[b.id()] - this.monthlyCounts[a.id()]);
 
     return (
       <div className="Afrux-TopPostersWidget-users">
-        {users.map((user: User) => (
+        {(isCurrentDeviceMobile ? users.slice(0, 5) : users).map((user: User) => (
           <div className="Afrux-TopPostersWidget-users-item">
             <div className="Afrux-TopPostersWidget-users-item-avatar">{avatar(user)}</div>
             <div className="Afrux-TopPostersWidget-users-item-content">
