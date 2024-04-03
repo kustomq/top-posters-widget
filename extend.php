@@ -31,6 +31,8 @@ return [
 
     (new Extend\Settings)->serializeToForum('excluded_usernames', 'afrux-top-posters-widget.excluded_usernames'),
 
+    (new Extend\Settings)->default('afrux-top-posters-widget.cache_time', 2400)->serializeToForum('cache_time', 'afrux-top-posters-widget.cache_time'),
+
     (new Extend\ApiSerializer(FlarumSerializer\ForumSerializer::class))
         ->attributes(AddTopPostersToApi::class)
         ->hasMany('topPosters', FlarumSerializer\UserSerializer::class),

@@ -37,7 +37,9 @@ class UserRepository
 
     public function getTopPosters(): array
     {
-        return $this->cache->remember('afrux-top-posters-widget.top_poster_counts', 2400, function (): array {
+        $cacheTime = $this->settings->get('afrux-top-posters-widget.cache_time') ?: 0;
+
+        return $this->cache->remember('afrux-top-posters-widget.top_poster_counts', $cacheTime, function (): array {
             $excludedUsernames = explode(';', $this->settings->get('afrux-top-posters-widget.excluded_usernames'));
 
             return CommentPost::query()
