@@ -55,7 +55,9 @@ export default class TopPostersWidget extends Widget {
           <div className="Afrux-TopPostersWidget-users-item">
             <div className="Afrux-TopPostersWidget-users-item-avatar">{avatar(user)}</div>
             <div className="Afrux-TopPostersWidget-users-item-content">
-              <div className="Afrux-TopPostersWidget-users-item-name">{user.displayName()}</div>
+              <a className="Afrux-TopPostersWidget-users-item-name" href={app.route.user(user)}>
+                {user.displayName()}
+              </a>
               <div className="Afrux-TopPostersWidget-users-item-value">
                 {icon('fas fa-comment-dots')} {this.monthlyCounts[user.id()]}
               </div>
