@@ -27,5 +27,5 @@ php flarum cache:clear
 ## Links
 
 - [Packagist](https://packagist.org/packages/afrux/top-posters-widget)
-- [GitHub](https://github.com/afrux/top-posters-widget)
-- [Discuss](https://discuss.flarum.org/d/PUT_DISCUSS_SLUG_HERE)
+- [GitHub](https://github.com/kustomq/top-posters-widget)
+- [Forked GitHub Source](https://github.com/afrux/top-posters-widget)

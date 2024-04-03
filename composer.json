@@ -2,7 +2,10 @@
     "name": "afrux/top-posters-widget",
     "description": "Top Posters Widget",
     "keywords": [
-        "flarum", "widget", "posters", "forum"
+        "flarum",
+        "widget",
+        "posters",
+        "forum"
     ],
     "funding": [
         {
@@ -14,9 +17,9 @@
     "license": "MIT",
     "homepage": "https://afrux.github.io",
     "support": {
-      "issues": "https://github.com/afrux/top-posters-widget/issues",
-      "source": "https://github.com/afrux/top-posters-widget",
-      "forum": "https://discuss.flarum.org/"
+        "issues": "https://github.com/afrux/top-posters-widget/issues",
+        "source": "https://github.com/afrux/top-posters-widget",
+        "forum": "https://discuss.flarum.org/"
     },
     "require": {
         "flarum/core": "^1.0.0",
@@ -29,6 +32,10 @@
         {
             "name": "Sami Mazouz",
             "email": "sychocouldy@gmail.com",
+            "role": "Developer"
+        },
+        {
+            "name": "Daniel Mashukov",
             "role": "Developer"
         }
     ],
